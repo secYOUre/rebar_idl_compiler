@@ -1,0 +1,5 @@
+A Rebar IDL Compiler Plugin
+===========================
+
+
+rebar_idl_compiler is a Rebar plugin adding support for IDL files.
