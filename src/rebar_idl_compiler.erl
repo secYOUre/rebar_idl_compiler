@@ -83,14 +83,12 @@
 
 -spec compile(Config::rebar_config:config(), AppFile::file:filename()) -> 'ok'.
 compile(Config, _AppFile) ->
-    io:format("CAAAAAAAAAAAAAAAAAAAAAAALLLLLLLLLLED~n"),
     rebar_base_compiler:run(Config, filelib:wildcard("idl/*.idl"),
                             "idl", ".idl", "idl", ".erl",
                             fun compile_idl/3).
 
 -spec clean(Config::rebar_config:config(), AppFile::file:filename()) -> 'ok'.
 clean(Config, _AppFile) ->
-    io:format("CAAAAAAAAAAAAAAAAAAAAAAALLLLLLLLLLED~n"),
     rebar_file_utils:delete_each(idl_generated_files("src", Config)),
     ok.
 

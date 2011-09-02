@@ -1,0 +1,20 @@
+{application, idlex,
+ [
+  {description, "A Rebar IDL Compiler Example"},
+  {vsn, "example"},
+  {id, "idlex"},
+  {modules, [
+             'IDLEx_Hello',
+             'IDLEx_Hello_impl',
+             idlex_app,
+             idlex_sup,
+             oe_idlex
+            ]},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {mod, { idlex_app, []}},
+  {env, []}
+ ]}.

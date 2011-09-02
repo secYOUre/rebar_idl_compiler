@@ -1,0 +1,22 @@
+This is a short description on the use of IDL erl_genserv demo,
+compiled via Rebar IDL Compiler plugin. A client asks an unusual 
+greeting message from a service that lies on an Erlang-genserver.
+
+Instructions.
+
+    On the command shell type:
+    --------------------------
+
+        make                            (generate the code from IDL
+                                         definitions and build the app)
+
+
+    On the erlang shell type :
+    --------------------------
+
+        {ok, R} = idlexample_Hello:oe_create(). (initialize the server)
+
+        idlexample_Hello:sayHello(R).   ( ask the greeting message )
+
+        idlexample_Hello:shutdown(R).   ( call the shutdown funciton)
+
