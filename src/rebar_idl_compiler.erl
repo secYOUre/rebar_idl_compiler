@@ -30,45 +30,77 @@
 %% to src/backends/<idl_backend_name>/*.erl.
 %%
 %% Configuration options should be placed in rebar.config under
-%% 'idl_opts'.  Available options include:
+%% 'idl_opts'.  Available options are documented at ic man page
+%% <http://www.erlang.org/doc/man/ic.html> and include, but are 
+%% not limited to:
 %%
-%%  doc_root: where to find templates to compile
-%%            "templates" by default
+%%  outdir:  places all output files in the directory given by 
+%%           the option. The directory will be created if it does not 
+%%           already exist. Defaults to: src/backends/<backend_name>
+%%           where the backend name is the identifier specified via
+%%           the 'be' option. See below.
+%%           Example option: {outdir, "output/generated"}
 %%
-%%  out_dir: where to put compiled template beam files
-%%           "ebin" by default
+%%  cfgfile: Uses FileName as configuration file. Options will override
+%%           compiler defaults but can be overridden by command line 
+%%           options. Default value is ".ic_config"
+%%           Example option: {cfgfile, "special.cfg"}
 %%
-%%  source_ext: the file extension the template sources have
-%%              ".dtl" by default
+%%  be:      Determine which back-end IC will generate code for. If left
+%%           out, erl_corba will be used. Currently, IC support the 
+%%           following back-ends:
 %%
-%%  module_ext: characters to append to the template's module name
-%%              "_dtl" by default
+%%              erl_corba
+%%              This option switches to the IDL generation for CORBA.
 %%
-%% For example, if you had:
-%%   /t_src/
-%%          base.html
-%%          foo.html
+%%              erl_template
+%%              Generate CORBA call-back module templates for each 
+%%              interface in the target IDL file. Note, will overwrite 
+%%              existing files.
 %%
-%% And you wanted them compiled to:
-%%   /priv/
-%%         base.beam
-%%         foo.beam
+%%              erl_plain
+%%              Will produce plain Erlang modules which contain 
+%%              functions that map to the corresponding interface 
+%%              functions on the input file.
 %%
-%% You would add to your rebar.config:
-%%   {erlydtl_opts, [
-%%               {doc_root,   "t_src"},
-%%               {out_dir,    "priv"},
-%%               {source_ext, ".html"},
-%%               {module_ext, ""}
+%%              erl_genserv
+%%              This is an IDL to Erlang generic server generation option.
+%%
+%%              c_client
+%%              Will produce a C client to the generic Erlang server.
+%%
+%%              c_server
+%%              Will produce a C server switch with functionality of a 
+%%              generic Erlang server.
+%%
+%%              java
+%%              Will produce Java client stubs and server skeletons with 
+%%              functionality of a generic Erlang server.
+%%
+%%              c_genserv
+%%              Deprecated. Use c_client instead.
+%%
+%%              Example option: {be, erl_genserv}.
+%%
+%% {{impl, IntfName}, ModName}:
+%%           Assumes that the interface with name IntfName is 
+%%           implemented by the module with name ModName and will 
+%%           generate calls to the ModName module in the server 
+%%           behavior. Note that the IntfName must be a fully scoped
+%%           name as in "M1::I1".
+%%
+%%
+%%
+%%
+%% For example, here is a valid idl_opts block for a rebar.config:
+%%
+%%   {idl_opts, [
+%%               {gen_hrl, true}, 
+%%               {be, erl_genserv},
+%%               {cfgfile, "cfg/server.cfg"},
+%%               {{impl, yetanotheridlinterface::sayhi}, modulesayhi}
 %%              ]}.
 %%
-%% The default settings are the equivalent of:
-%%   {erlydtl_opts, [
-%%               {doc_root,   "templates"},
-%%               {out_dir,    "ebin"},
-%%               {source_ext, ".dtl"},
-%%               {module_ext, "_dtl"}
-%%              ]}.
 -module(rebar_idl_compiler).
 -author('adg@secYOUre.com').
 
