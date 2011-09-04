@@ -138,7 +138,9 @@ compile_idl(Source, Target, Config) ->
             ok;
         {error, _Reason} ->
             ?FAIL
-    end.
+    end,
+    %% compile the generated .erl files
+    rebar_erlc_compiler:doterl_compile(Config, "ebin").
 
 idl_generated_files(SrcDir, Config) ->
     Opts = rebar_config:get(Config, idl_opts, []),
